@@ -1,0 +1,92 @@
+@php
+    $tdClass = Config::get('engineer-management.tableClasses.td');
+    $thClass = Config::get('engineer-management.tableClasses.th');
+    $trThClass = Config::get('engineer-management.tableClasses.colTr');
+    $divTopClass = Config::get('engineer-management.tableClasses.divTop');
+    $divSeparator = Config::get('engineer-management.tableClasses.divSeparator');
+    $tdActionLink = Config::get('engineer-management.buttonClasses.btnGrey');
+    $tdActionLinkDelete = Config::get('engineer-management.buttonClasses.btnRed');
+    $table = Config::get('engineer-management.tableClasses.table');
+
+    $inputNormal = Config::get('engineer-management.formClasses.input-normal');
+    $inputError = Config::get('engineer-management.formClasses.input-error');
+    $inputLabel = Config::get('engineer-management.formClasses.label');
+    $checkboxLabel = Config::get('engineer-management.formClasses.checkboxLabel');
+    $checkbox = Config::get('engineer-management.formClasses.checkbox');
+    $errorMessage = Config::get('engineer-management.formClasses.error-message');
+
+@endphp
+
+<div class="{{ $divTopClass }}">
+
+    {{-- Modal Add Engineer --}}
+    @if ($modalMode)
+        <livewire:addupdateengineermodal-component :mode="$modalMode" :modalTitle="$modalTitle" :engineerManagerId="$engineerManagerId" />
+    @endif
+
+    <x-engineermanagement::section-title>
+        <x-slot name="title">
+            Engineer Management
+        </x-slot>
+        <x-slot name="description">
+            Manage your engineers effectively.
+        </x-slot>
+    </x-engineermanagement::section-title>
+
+    <div class="{{ $divSeparator }}">
+        &nbsp;
+    </div>
+
+    <div class="mt-3 mb-3 px-5">
+        <button type="button" class="{{ $tdActionLink }}" wire:click="toggleAddModal">
+            Add Engineer
+        </button>
+    </div>
+
+    <div class="mt-3 mb-3 flex justify-between gap-x-6 py-5 px-5">
+        <x-input name="filter" class="" placeholder="Search records" wire:model.live='filter' />
+    </div>
+
+    @if ($showList)
+        {{ $engineers->links() }}
+    @endif
+
+    <x-engineermanagement::table>
+        <x-slot name="tableColumns">
+            <tr class="{{ $trThClass }}">
+                <th class="{{ $thClass }}">ID</th>
+                <th class="{{ $thClass }}">Name</th>
+                <th class="{{ $thClass }}">Manager</th>
+                <th class="{{ $thClass }}">Position</th>
+                <th class="{{ $thClass }}">Active</th>
+                <th class="{{ $thClass }}">Actions</th>
+            </tr>
+        </x-slot>
+        <x-slot name="tableRows">
+            @if ($showList && !$engineers->isEmpty())
+                @foreach ($engineers as $engineer)
+                    <tr class="hover:bg-gray-50">
+                        <td class="{{ $tdClass }}">{{ $engineer->id }}</td>
+                        <td class="{{ $tdClass }}">{{ $engineer->user->name ?? '-' }}</td>
+                        <td class="{{ $tdClass }}">{{ $engineer->engmanager->name ?? '-' }}</td>
+                        <td class="{{ $tdClass }}">{{ $engineer->position ?? '-' }}</td>
+                        <td class="{{ $tdClass }}">{{ $engineer->active ? 'Yes' : 'No' }}</td>
+                        <td class="{{ $tdClass }}">
+                            <button type="button" class="{{ $tdActionLink }}"
+                                wire:click="toggleEditModal({{ $engineer->id }})">View</button>
+                        </td>
+                    </tr>
+                @endforeach
+            @else
+                <tr>
+                    <td class="{{ $tdClass }}" colspan="6">No records found.</td>
+                </tr>
+            @endif
+        </x-slot>
+    </x-engineermanagement::table>
+
+    @if ($showList)
+        {{ $engineers->links() }}
+    @endif
+
+</div>
