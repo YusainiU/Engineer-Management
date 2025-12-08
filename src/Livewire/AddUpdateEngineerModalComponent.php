@@ -28,7 +28,7 @@ class AddUpdateEngineerModalComponent extends ModalComponent
     public $listOfDepartments = [];
 
 
-    public static function modalMaxWidth(): string
+    public static function maxWidth(): string
     {
         // Supported: 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl'
         return '6xl';

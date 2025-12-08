@@ -24,6 +24,11 @@
         <livewire:addupdateengineermodal-component :mode="$modalMode" :modalTitle="$modalTitle" :engineerManagerId="$engineerManagerId" />
     @endif
 
+    {{-- Modal List ENgineer Skills --}}
+    @if($modalSkill)
+        <livewire:addupdateengineerskillsmodal-component :engineerId="$engineerId" />
+    @endif
+
     <x-engineermanagement::section-title>
         <x-slot name="title">
             Engineer Management
@@ -72,8 +77,20 @@
                         <td class="{{ $tdClass }}">{{ $engineer->position ?? '-' }}</td>
                         <td class="{{ $tdClass }}">{{ $engineer->active ? 'Yes' : 'No' }}</td>
                         <td class="{{ $tdClass }}">
-                            <button type="button" class="{{ $tdActionLink }}"
-                                wire:click="toggleEditModal({{ $engineer->id }})">View</button>
+                            <button 
+                                type="button" 
+                                class="{{ $tdActionLink }}"
+                                wire:click="toggleEditModal({{ $engineer->id }})"
+                            >
+                                Update
+                            </button>
+                            <button 
+                                type="button" 
+                                class="{{ $tdActionLink }}"
+                                wire:click="toggleSkillModal({{ $engineer->id }})"
+                            >
+                                View Skills
+                            </button>
                         </td>
                     </tr>
                 @endforeach

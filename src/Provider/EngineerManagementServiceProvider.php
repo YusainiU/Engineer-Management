@@ -11,7 +11,7 @@ use Simplydigital\EngineerManagement\Livewire\AddUpdateEngineerModalComponent;
 use Simplydigital\EngineerManagement\Livewire\AddUpdateSkillModalComponent;
 use Simplydigital\EngineerManagement\Livewire\SkillsComponent;
 use Simplydigital\EngineerManagement\Livewire\EngineerManagementComponent;
-use Simplydigital\EngineerManagement\Models\Skills;
+use Simplydigital\EngineerManagement\Livewire\AddUpdateEngineerSkillsModalComponent;
 
 class EngineerManagementServiceProvider extends ServiceProvider
 {
@@ -58,6 +58,9 @@ class EngineerManagementServiceProvider extends ServiceProvider
         
         //Register Blade directive for Skill Component
         Blade::component('blade-skill', BladeSkillComponent::class);
+
+        //Register livewire AddUpdateEngineerSkillsModalComponent
+        Livewire::component('addupdateengineerskillsmodal-component', AddUpdateEngineerSkillsModalComponent::class);
      
     }
 

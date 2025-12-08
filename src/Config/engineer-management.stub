@@ -26,7 +26,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Prefixes
+    | Departments/Positions
     |--------------------------------------------------------------------------
     |
     | List of Departments & Positions
@@ -46,6 +46,22 @@ return [
         'manager' => 'Manager',
         'technician' => 'Technician',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Skills Levels
+    |--------------------------------------------------------------------------
+    |
+    | List of Skill Levels
+    |
+    */
+
+    'skill_levels' => [
+        'apprentice' => 'Apprentice',
+        'intermediate' => 'intermediate',
+        'expert' => 'Expert',
+        'professional' => 'Professionl', 
+    ],    
 
 
     /*

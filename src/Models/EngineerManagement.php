@@ -36,7 +36,7 @@ class EngineerManagement extends Model
 
 	public function skills(): HasMany
 	{
-		return $this->hasMany(skills::class, 'engineer_id');
+		return $this->hasMany(EngineerSkills::class, 'engineer_id');
 	}
 
 	public function casts(): array

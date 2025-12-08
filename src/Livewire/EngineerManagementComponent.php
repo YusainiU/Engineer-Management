@@ -13,7 +13,9 @@ class EngineerManagementComponent extends Component
 
     
     public $engineerManagerId;
+    public $engineerId;
     public $modalMode = '';
+    public $modalSkill = false;
     public $modalTitle = '';
     public $showEditModal = false;
     public $showAddModal = false;
@@ -30,6 +32,7 @@ class EngineerManagementComponent extends Component
         $this->showEditModal = false;
         $this->modalMode = '';
         $this->modalTitle = '';
+        $this->modalSkill = false;
         $this->render();
     }
     
@@ -91,6 +94,13 @@ class EngineerManagementComponent extends Component
         $this->modalTitle = $this->showAddModal ? 'Add Engineer':'';
         $this->modalMode = $this->showAddModal ? 'toggleAddModal':'';
     }
+
+    public function toggleSkillModal($id = null)
+    {
+        $this->engineerId = $id;
+        $this->modalSkill = !$this->modalSkill;
+        $this->modalTitle = $this->modalSkill ? 'Engineer Skills':'';
+    }   
 
     public function render()
     {

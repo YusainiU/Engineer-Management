@@ -14,7 +14,12 @@ class EngineerSkills extends Model
 		'number',
 		'engineer_id',
 		'skill_id',
+		'skill_level',
 		'active',
+	];
+
+	protected $casts = [
+		'active' => 'boolean',
 	];
 
 	public function setNumberAttribute($value)
@@ -25,6 +30,13 @@ class EngineerSkills extends Model
 	public function engineer(): BelongsTo
 	{
 		return $this->belongsTo(EngineerManagement::class, 'engineer_id');
+	}
+
+	public function casts(): array
+	{
+		return [
+			'active' => 'boolean',
+		];
 	}
 
 
