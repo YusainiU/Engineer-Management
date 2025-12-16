@@ -3,6 +3,7 @@
 namespace Simplydigital\EngineerManagement\Livewire;
 
 use LivewireUI\Modal\ModalComponent;
+use Simplydigital\EngineerManagement\Models\Skills;
 use Simplydigital\EngineerManagement\Models\EngineerSkills;
 use Simplydigital\EngineerManagement\Models\EngineerManagement;
 
@@ -15,6 +16,9 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
     public $modalMode='update'; // 'add' or 'update'
     public $modalTitle='Engineer Skills';
     public $modalSave = 'save';
+    public $skills = [];
+
+
 
     public static function maxWidth(): string
     {
@@ -31,7 +35,13 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
     {
         $this->engineer = $this->getEngineer();
         $this->engineerSkills = $this->engineer->skills;
-    }   
+        $this->skills = $this->getAllActiveSkills();
+    }
+    
+    public function getAllActiveSkills()
+    {
+        return Skills::where('active','=',true)->pluck('skills','id');
+    }
 
     public function getEngineer()
     {

@@ -24,6 +24,8 @@ class EngineerManagementServiceProvider extends ServiceProvider
         //Load views
         $this->loadViewsFrom(__DIR__.'/../Resources/views', 'engineermanagement');
 
+        $this->loadViewComponentsAs('engineermanagement-ui',[\Simplydigital\EngineerManagement\View\Components\Icon::class]);
+
         //Publish migrations
         $this->publishes([
             __DIR__ . '/../Database/migrations/create_engineer_management_table.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_engineer_management_table.php'),
@@ -36,7 +38,11 @@ class EngineerManagementServiceProvider extends ServiceProvider
             __DIR__ . '/../Config/engineer-management.stub' => config_path('engineer-management.php'),
         ], 'engineer-management-config');
 
-        //Publisg routes if exists
+        $this->publishes([
+            __DIR__.'/../Resources/icons' => resource_path('Simplydigital/EngineerManagement/icons')
+        ], 'simplydigital-resources');
+
+        //Publish routes if exists
         if (file_exists(__DIR__ . '/../Routes/web.php')) {
             $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
         }

@@ -8,6 +8,8 @@
     $tdActionLinkDelete = Config::get('engineer-management.buttonClasses.btnRed');
     $table = Config::get('engineer-management.tableClasses.table');
 
+    $tdActionLink = "inline-flex items-center gap-2 cursor-pointer {{ $tdActionLink }}";
+
     $inputNormal = Config::get('engineer-management.formClasses.input-normal');
     $inputError = Config::get('engineer-management.formClasses.input-error');
     $inputLabel = Config::get('engineer-management.formClasses.label');
@@ -31,7 +33,10 @@
 
     <x-engineermanagement::section-title>
         <x-slot name="title">
+            <div>
+            <x-engineermanagement-ui-icon name="engineer" class="h-10 w-10" />
             Engineer Management
+            </div>
         </x-slot>
         <x-slot name="description">
             Manage your engineers effectively.
@@ -44,6 +49,7 @@
 
     <div class="mt-3 mb-3 px-5">
         <button type="button" class="{{ $tdActionLink }}" wire:click="toggleAddModal">
+            <x-engineermanagement-ui-icon name="add" class="h-6 w-6" />
             Add Engineer
         </button>
     </div>
@@ -82,6 +88,7 @@
                                 class="{{ $tdActionLink }}"
                                 wire:click="toggleEditModal({{ $engineer->id }})"
                             >
+                                <x-engineermanagement-ui-icon name="edit" class="h-6 w-6" />
                                 Update
                             </button>
                             <button 
@@ -89,6 +96,7 @@
                                 class="{{ $tdActionLink }}"
                                 wire:click="toggleSkillModal({{ $engineer->id }})"
                             >
+                                <x-engineermanagement-ui-icon name="skill" class="h-6 w-6" />
                                 View Skills
                             </button>
                         </td>

@@ -14,6 +14,10 @@
     $checkboxLabel = Config::get('engineer-management.formClasses.checkboxLabel');
     $checkbox = Config::get('engineer-management.formClasses.checkbox');
     $errorMessage = Config::get('engineer-management.formClasses.error-message');
+
+    $tdActionLink = "inline-flex items-center gap-2 cursor-pointer {{ $tdActionLink }}";
+    $tdActionLinkDelete = "inline-flex items-center gap-2 cursor-pointer {{ $tdActionLinkDelete }}";
+
 @endphp
 
 <div class="{{ $divTopClass }}">
@@ -23,10 +27,11 @@
 
     <x-engineermanagement::section-title>
         <x-slot name="title">
+            <x-engineermanagement-ui-icon name="skill" class="h-10 w-10" />
             Skill Management
         </x-slot>
         <x-slot name="description">
-            Manage your skills effectively.
+            List of Skills
         </x-slot>
     </x-engineermanagement::section-title>
 
@@ -36,6 +41,7 @@
 
     <div class="mt-3 mb-3 px-5">
         <button type="button" class="{{ $tdActionLink }}" wire:click="toggleAddModal">
+            <x-engineermanagement-ui-icon name="add" class="h-6 w-6" />
             Add Skill
         </button>
     </div>
@@ -74,12 +80,14 @@
                             <button type="button" class="{{ $tdActionLink }}"
                                 wire:click="toggleUpdateModal({{ $skill->id }})"
                             >
+                                <x-engineermanagement-ui-icon name="edit" class="h-6 w-6" />
                                 Edit
                             </button>
                             <button type="button" class="{{ $tdActionLinkDelete }}"
                                 wire:click="delete({{ $skill->id }})"
                                 wire:confirm="Are you sure you want to delete this skill?"
                             >
+                                <x-engineermanagement-ui-icon name="crosscircle" class="w-6 h-6" />
                                 Delete
                             </button>
                         </td>
