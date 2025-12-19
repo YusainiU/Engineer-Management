@@ -15,6 +15,7 @@ class EngineerSkills extends Model
 		'engineer_id',
 		'skill_id',
 		'skill_level',
+		'description',
 		'active',
 	];
 
@@ -30,6 +31,11 @@ class EngineerSkills extends Model
 	public function engineer(): BelongsTo
 	{
 		return $this->belongsTo(EngineerManagement::class, 'engineer_id');
+	}
+
+	public function skill()
+	{
+		return $this->belongsTo(Skills::class, 'skill_id');
 	}
 
 	public function casts(): array

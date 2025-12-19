@@ -18,7 +18,7 @@
     <div class="{{ $modalPanel }}">
         <div class="{{ $modalHeaderPanel }}">
             <h3 class="{{ $modalHeader }}">{{ $title ?? 'Engineer' }}</h3>
-            <button type="button" class="{{ $modalXButton }}" aria-label="Close" wire:click="{{ $action }}">×</button>
+            <button type="button" class="inline-flex items-center gap-2 cursor-pointer {{ $modalXButton }}" aria-label="Close" wire:click="{{ $action }}">×</button>
         </div>
         <div class="p-6">
             <div class="space-y-3">
@@ -26,8 +26,8 @@
             </div>
         </div>
         <div class="{{ $modalButtonGroup }}">
-            <button type="button" class="{{ $tdActionLink }}" wire:click="{{ $action }}">Close</button>
-            <button type="button" class="{{ $tdActionLink }}" wire:click="{{ $save }}"
+            <button type="button" class="inline-flex items-center gap-2 cursor-pointer {{ $tdActionLink }}" wire:click="{{ $action }}">Close</button>
+            <button type="button" class="inline-flex items-center gap-2 cursor-pointer {{ $tdActionLink }}" wire:click="{{ $save }}"
                 wire:loading.attr="disabled">Save</button>
         </div>
     </div>

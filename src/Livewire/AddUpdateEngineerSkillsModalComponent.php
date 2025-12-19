@@ -2,6 +2,7 @@
 
 namespace Simplydigital\EngineerManagement\Livewire;
 
+use App\Livewire\EngineerSkills as LivewireEngineerSkills;
 use LivewireUI\Modal\ModalComponent;
 use Simplydigital\EngineerManagement\Models\Skills;
 use Simplydigital\EngineerManagement\Models\EngineerSkills;
@@ -12,13 +13,19 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
 
     public $engineerId;
     public $engineerSkills;
+    public $currentSkill;
     public $engineer;
-    public $modalMode='update'; // 'add' or 'update'
+    public $modalMode='closedAndRefresh'; // 'add' or 'update'
     public $modalTitle='Engineer Skills';
     public $modalSave = 'save';
     public $skills = [];
+    public $skill_levels = [];
+    public $displayList = true;
 
-
+    public $skill_id = '';
+    public $skill_level = '';
+    public $description = '';
+    public $active = true;
 
     public static function maxWidth(): string
     {
@@ -36,6 +43,21 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
         $this->engineer = $this->getEngineer();
         $this->engineerSkills = $this->engineer->skills;
         $this->skills = $this->getAllActiveSkills();
+        $this->skill_levels = config('engineer-management.skill_levels');
+
+        if($this->engineerSkills->isEmpty())
+        {
+            $this->displayList = false;
+        }
+    }
+
+    public function rules()
+    {
+        return [
+            'skill_id' => 'required|integer',
+            'skill_level' => 'required|string',
+            'description' => 'nullable',
+        ];
     }
     
     public function getAllActiveSkills()
@@ -56,19 +78,76 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
         return $skills;
     }
 
+    public function getSkill($skillId)
+    {
+        $this->modalSave = 'update';
+        $this->skill_id = $skillId;
+        $this->currentSkill = EngineerSkills::find($skillId);
+        $this->skill_level = $this->currentSkill->skill_level;
+        $this->description = $this->currentSkill->description;
+        $this->active = $this->currentSkill->active;
+    }
+
     public function update()
     {
-        $this->closedAndRefresh();
+        $this->validate();
+        $input = [
+            'skill_level' => $this->skill_level,
+            'description' => $this->description,
+            'active' => $this->active,
+        ];
+        $this->currentSkill->update($input);
+        session()->flash('message', 'The skill has been updated');
+        $this->resetForm();
+        $this->displayList = true;
+        $this->engineerSkills = $this->currentSkill->get();
+        //$this->closedAndRefresh();
     }
 
     public function save()
-    {        
+    {
+        $this->validate();
+        $input = [
+            'number' => null,
+            'engineer_id' => $this->engineerId, 
+            'skill_id' => $this->skill_id,
+            'skill_level' => $this->skill_level,
+            'description' => $this->description,
+        ];
+        EngineerSkills::create($input);
+        session()->flash('message', 'Skill has been added to the engineer profile');
+        $this->resetForm();
         $this->closedAndRefresh();
+    }
+
+    public function resetForm()
+    {
+        $this->skill_id = '';
+        $this->skill_level = '';
+        $this->description = '';
+        $this->active = true;
+    }
+
+    public function backToList()
+    {
+        $this->displayList = true;
     }
 
     public function closedAndRefresh()
     {
         $this->closeModal();
+    }
+
+    public function createNewSkill()
+    {
+        $this->modalSave = 'save';
+        $this->displayList = false;
+    }
+
+    public function updateSkill($engineerSkillId)
+    {
+        $this->getSkill($engineerSkillId);
+        $this->displayList = false;
     }
         
     public function render()

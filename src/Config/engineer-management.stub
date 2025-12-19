@@ -58,9 +58,9 @@ return [
 
     'skill_levels' => [
         'apprentice' => 'Apprentice',
-        'intermediate' => 'intermediate',
+        'intermediate' => 'Intermediate',
         'expert' => 'Expert',
-        'professional' => 'Professionl', 
+        'professional' => 'Professional', 
     ],    
 
 
@@ -116,6 +116,14 @@ return [
         'checkboxLabel' => "ms-2 text-sm font-medium text-gray-900 dark:text-gray-300",
         'error-message' => "text-red-500 text-xs italic mt-2",
         'fileInput' => 'block w-full text-xl text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400x',
-    ],    
+    ],
+    
+    'listClass' => [
+        'ul' => "max-w-md mx-auto bg-white shadow-lg rounded-xl divide-y divide-gray-200",
+        'li' => "flex items-center gap-4 p-4 hover:bg-gray-50 transition",
+        'liLeftItem' => "flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600 font-semibold",
+        'liRightTopItem' => "font-medium text-gray-900",
+        'liRightBottomItem' =>"text-sm text-gray-500",
+    ],
 
 ];
