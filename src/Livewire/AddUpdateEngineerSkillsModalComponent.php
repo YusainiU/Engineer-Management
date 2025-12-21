@@ -101,7 +101,6 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
         $this->resetForm();
         $this->displayList = true;
         $this->engineerSkills = $this->currentSkill->get();
-        //$this->closedAndRefresh();
     }
 
     public function save()

@@ -9,6 +9,7 @@
     $table = Config::get('engineer-management.tableClasses.table');
 
     $tdActionLink = "inline-flex items-center gap-2 cursor-pointer {{ $tdActionLink }}";
+    $tdActionLinkDelete = "inline-flex items-center gap-2 cursor-pointer {{ $tdActionLinkDelete }}";
 
     $inputNormal = Config::get('engineer-management.formClasses.input-normal');
     $inputError = Config::get('engineer-management.formClasses.input-error');
@@ -98,6 +99,15 @@
                             >
                                 <x-engineermanagement-ui-icon name="skill" class="h-6 w-6" />
                                 View Skills
+                            </button>
+                            <button 
+                                type="button" 
+                                class="{{ $tdActionLinkDelete }}"
+                                wire:click="delete({{ $engineer->id }})"
+                                wire:confirm="Continue to remove engineer?"
+                            >
+                                <x-engineermanagement-ui-icon name="minuscircle" class="h-6 w-6" />
+                                Delete
                             </button>
                         </td>
                     </tr>

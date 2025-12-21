@@ -30,7 +30,9 @@ class EngineerManagementServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../Database/migrations/create_engineer_management_table.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_engineer_management_table.php'),
             __DIR__ . '/../Database/migrations/create_skills_table.stub' => database_path('migrations/' . date('Y_m_d_His', time() + 1) . '_create_skills_table.php'),
-            __DIR__ . '/../Database/migrations/create_engineer_skills_table.stub' => database_path('migrations/' . date('Y_m_d_His', time() + 2) . '_create_engineer_skills_table.php'),            
+            __DIR__ . '/../Database/migrations/create_engineer_skills_table.stub' => database_path('migrations/' . date('Y_m_d_His', time() + 2) . '_create_engineer_skills_table.php'),
+            __DIR__ . '/../Database/migrations/create_certificate_table.stub' => database_path('migrations/' . date('Y_m_d_His', time() + 3) . '_create_certificate_table.php'),
+            __DIR__ . '/../Database/migrations/create_engineer_certification_table.stub' => database_path('migrations/' . date('Y_m_d_His', time() + 4) . '_create_engineer_certification_table.php'),  
         ], 'engineer-management-migrations');
         
         //Publis config
