@@ -62,8 +62,29 @@ return [
         'intermediate' => 'Intermediate',
         'expert' => 'Expert',
         'professional' => 'Professional', 
-    ],    
+    ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Certification Types
+    |--------------------------------------------------------------------------
+    |
+    | List of Certification Types
+    |
+    */
+
+    'certification_types' => [
+        'professional' => 'Professional',
+        'academic' => 'Academic',
+        'training' => 'Training',    
+    ],
+
+    'certificate_issuers' => [
+        'mitel' => 'Mitel Internation',
+        'cisco' => 'Cisco',
+        'microsoft' => 'Microsot Corporation',
+        'ubuntu' => 'Linux Ubuntu',
+    ],        
 
     /*
     |--------------------------------------------------------------------------

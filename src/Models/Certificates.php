@@ -11,6 +11,7 @@ class Certificates extends Model
     use SoftDeletes;
 
     protected $fillable = [
+		'number',
         'name',
         'type',
         'issued_by',

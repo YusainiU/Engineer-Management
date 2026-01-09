@@ -7,11 +7,14 @@ use Illuminate\Support\Facades\Blade;
 use Livewire\Livewire;
 use Simplydigital\EngineerManagement\Http\Components\BladeEngineerManagementComponent;
 use Simplydigital\EngineerManagement\Http\Components\BladeSkillComponent;
+use Simplydigital\EngineerManagement\Http\Components\BladeCertificateComponent;
 use Simplydigital\EngineerManagement\Livewire\AddUpdateEngineerModalComponent;
 use Simplydigital\EngineerManagement\Livewire\AddUpdateSkillModalComponent;
+use Simplydigital\EngineerManagement\Livewire\AddUpdateCertificateModalComponent;
 use Simplydigital\EngineerManagement\Livewire\SkillsComponent;
 use Simplydigital\EngineerManagement\Livewire\EngineerManagementComponent;
 use Simplydigital\EngineerManagement\Livewire\AddUpdateEngineerSkillsModalComponent;
+use Simplydigital\EngineerManagement\Livewire\CertificateComponent;
 
 class EngineerManagementServiceProvider extends ServiceProvider
 {
@@ -58,14 +61,23 @@ class EngineerManagementServiceProvider extends ServiceProvider
         //Register Livewire AddUpdateSkillModalComponent
         Livewire::component('addupdateskillmodal-component', AddUpdateSkillModalComponent::class);
 
+        //Register Livewire AddUpdateCertificateModalComponent
+        Livewire::component('addupdatecertificatemodal-component', AddUpdateCertificateModalComponent::class);
+
         //Register Livewire SkillsComponent
         Livewire::component('skills-component', SkillsComponent::class);
+
+        //Register Livewire CertificateComponent
+        Livewire::component('certificate-component', CertificateComponent::class);    
 
         //Register Blade directive for Engineer Management Component
         Blade::component('blade-engineermanagement', BladeEngineerManagementComponent::class);
         
         //Register Blade directive for Skill Component
         Blade::component('blade-skill', BladeSkillComponent::class);
+
+        //Register Blade directive for Certificate Component
+        Blade::component('blade-certificate', BladeCertificateComponent::class);
 
         //Register livewire AddUpdateEngineerSkillsModalComponent
         Livewire::component('addupdateengineerskillsmodal-component', AddUpdateEngineerSkillsModalComponent::class);
