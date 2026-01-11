@@ -58,9 +58,9 @@ class AddUpdateCertificateModalComponent extends ModalComponent
         $certificate = Certificates::find($certificateId);
         if($certificate->exists()){
             $this->modalTitle = 'Update Certificate';
-            $this->modalAction = 'update';
             $this->name = $certificate->name;
             $this->type = $certificate->type;
+            $this->active = $certificate->active;
             $this->issued_by = $certificate->issued_by;
         }   
     }

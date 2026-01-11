@@ -27,6 +27,16 @@ class EngineerCertifications extends Model
 		'expiry_date' => 'datetime:d-m-Y H;i:s',
     ];
 
+	public function engineer()
+	{
+		return $this->belongsTo(EngineerManagement::class, 'engineer_id');
+	}
+
+	public function certificate()
+	{
+		return $this->belongsTo(Certificates::class, 'certificate_id');
+	}
+
 	protected static function booted()
 	{
 		static::deleting(function ($certificate) {

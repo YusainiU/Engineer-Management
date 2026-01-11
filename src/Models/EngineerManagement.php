@@ -39,6 +39,11 @@ class EngineerManagement extends Model
 		return $this->hasMany(EngineerSkills::class, 'engineer_id');
 	}
 
+	public function certifications(): HasMany
+	{
+		return $this->hasMany(EngineerCertifications::class, 'engineer_id');
+	}
+
 	public function casts(): array
 	{
 		return [

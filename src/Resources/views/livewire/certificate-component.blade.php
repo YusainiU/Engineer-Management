@@ -78,7 +78,7 @@
                             @endif
                         </td>
                         <td class="{{ $tdClass }}">
-                            <button type="button" class="{{ $tdActionLink }}" wire:click="toggleEditModal({{ $certificate->id }})">
+                            <button type="button" class="{{ $tdActionLink }}" wire:click="toggleUpdateModal({{ $certificate->id }})">
                                 <x-engineermanagement-ui-icon name="edit" class="h-5 w-5" />
                                 Edit
                             </button>

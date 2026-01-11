@@ -2,7 +2,6 @@
 
 namespace Simplydigital\EngineerManagement\Livewire;
 
-use App\Livewire\EngineerSkills as LivewireEngineerSkills;
 use LivewireUI\Modal\ModalComponent;
 use Simplydigital\EngineerManagement\Models\Skills;
 use Simplydigital\EngineerManagement\Models\EngineerSkills;

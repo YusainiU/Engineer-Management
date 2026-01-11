@@ -32,6 +32,11 @@
         <livewire:addupdateengineerskillsmodal-component :engineerId="$engineerId" />
     @endif
 
+    {{-- Modal List of Engineer Certificates --}}
+    @if($modalCertificate)
+        <livewire:addupdateengineercertificatesmodal-component :engineerId="$engineerId" />
+    @endif
+
     <x-engineermanagement::section-title>
         <x-slot name="title">
             <div>
@@ -100,6 +105,14 @@
                                 <x-engineermanagement-ui-icon name="skill" class="h-6 w-6" />
                                 View Skills
                             </button>
+                            <button 
+                                type="button" 
+                                class="{{ $tdActionLink }}"
+                                wire:click="toggleCertificateModal({{ $engineer->id }})"
+                            >
+                                <x-engineermanagement-ui-icon name="skill" class="h-6 w-6" />
+                                View Certificates
+                            </button>                            
                             <button 
                                 type="button" 
                                 class="{{ $tdActionLinkDelete }}"

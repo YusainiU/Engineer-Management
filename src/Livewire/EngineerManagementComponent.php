@@ -16,6 +16,7 @@ class EngineerManagementComponent extends Component
     public $engineerId;
     public $modalMode = '';
     public $modalSkill = false;
+    public $modalCertificate = false;
     public $modalTitle = '';
     public $showEditModal = false;
     public $showAddModal = false;
@@ -33,6 +34,7 @@ class EngineerManagementComponent extends Component
         $this->modalMode = '';
         $this->modalTitle = '';
         $this->modalSkill = false;
+        $this->modalCertificate = false;
         $this->render();
     }
     
@@ -100,7 +102,14 @@ class EngineerManagementComponent extends Component
         $this->engineerId = $id;
         $this->modalSkill = !$this->modalSkill;
         $this->modalTitle = $this->modalSkill ? 'Engineer Skills':'';
-    }   
+    }
+    
+    public function toggleCertificateModal($id = null)
+    {
+        $this->engineerId = $id;
+        $this->modalCertificate = !$this->modalCertificate;
+        $this->modalTitle = $this->modalSkill ? 'Engineer Certificates':'';
+    }
 
     public function render()
     {

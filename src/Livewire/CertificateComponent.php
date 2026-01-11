@@ -51,6 +51,13 @@ class CertificateComponent extends Component
         $this->modalTitle = 'Add Certificate';
     }
 
+    public function toggleUpdateModal($id)
+    {
+        $this->certificateId = $id;
+        $this->modalMode = 'update';
+        $this->modalTitle = 'Update Certificate';
+    }
+
     public function filter()
     {
         $query = Certificates::query();
