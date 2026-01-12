@@ -47,33 +47,48 @@
                     </button>
                 @endif
             </div>
-            @if($displayList)
-            <ul class="{{ $ul }}">
-                @foreach ($certificates as $certificate)
-                    <li class="{{ $li }}">
-                        <div class="group">
-                            <span class="{{ $liLeft }} group-hover:hidden">
-                                {{ $loop->iteration }}
-                            </span>
-                            <span class="hidden group-hover:block">
-                                <button class="cursor-pointer" wire:click="updateCertificate({{ $certificate->id }})">
-                                    <x-engineermanagement-ui-icon name="edit" class="h-8 w-8 text-gray-900" />
-                                </button>
-                            </span>
-                        </div>
-                        <div class="{{ $liRightTop }}">
-                            {{ $certificate->certificate->name }}
-                        </div>
-                        <div class="{{ $liRightBottom }}">
-                            @if ($certificate->active)
-                                <span class="text-green-500">Active</span>
-                            @else
-                                <span class="text-red-500">Inactive</span>
-                            @endif
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
+            @if ($displayList)
+                <ul class="{{ $ul }}">
+                    @foreach ($certificates as $cert)
+                        <li class="{{ $li }}">
+                            <div class="group">
+                                <span class="{{ $liLeft }} group-hover:hidden">
+                                    @if($cert->isExpired())
+                                        <x-engineermanagement-ui-icon name="crosscircle" class="h-6 w-6 text-red-800" />
+                                    @else
+                                        {{ $loop->iteration }}
+                                     @endif
+                                </span>
+                                <span class="hidden group-hover:block">
+                                    <button class="cursor-pointer" wire:click="updateCertificate({{ $cert->id }})">
+                                        <x-engineermanagement-ui-icon name="edit" class="h-8 w-8 text-gray-900" />
+                                    </button>
+                                </span>
+                            </div>
+                            <div class="{{ $liRightTop }}">
+                                <div class="flex flex-col gap-2">
+                                    <span>{{ $cert->certificate->name }}</span>
+                                    <span class="text-xs">Issued:
+                                        {{ $cert->issued_date ? \Carbon\Carbon::parse($cert->issued_date)->format('d-m-Y') : 'N/A' }}</span>
+                                    <span class="text-xs">Expiry:
+                                        {{ $cert->expiry_date ? \Carbon\Carbon::parse($cert->expiry_date)->format('d-m-Y') : 'N/A' }}
+                                        @if($cert->isExpired())
+                                            <span class="text-red-800 font-extrabold">(EXPIRED)</span>
+                                        @endif
+                                    </span>
+                                    <span class="text-xs">
+                                        @if ($cert->active)
+                                            <span class="text-blue-800">Active</span>
+                                        @else
+                                            <span class="text-red-800 font-extrabold">INACTIVE</span>
+                                        @endif
+                                    </span>
+                                </div>
+                            </div>
+
+                        </li>
+                    @endforeach
+                </ul>
             @else
                 <div>
                     <label for="certificateId" class="{{ $inputLabel }}">Certificate</label>
@@ -88,16 +103,40 @@
                         <span class="{{ $errorMessage }}">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="mt-4">
-                    <label class="{{ $checkboxLabel }}">
-                        <input type="checkbox" wire:model="active" class="{{ $checkbox }}" />
-                        Active
-                    </label>
+                <div>
+                    <label for="issuedDate" class="{{ $inputLabel }}">Issued Date</label>
+                    <input 
+                        type="Date" 
+                        wire:model="issuedDate" 
+                        id="issuedDate" 
+                        placeholder="DD-MM-YYYY"
+                        class="{{ $errors->has('issuedDate') ? $inputError : $inputNormal }}" 
+                        {{-- @if($issuedDate) value="{{ $issuedDate }}" @endif --}}
+                    />
+                    @error('issuedDate')
+                        <span class="{{ $errorMessage }}">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div>
+                    <label for="expiryDate" class="{{ $inputLabel }}">Expiry Date</label>
+                    <input 
+                        type="Date" 
+                        wire:model="expiryDate" 
+                        id="expiryDate" 
+                        placeholder="DD-MM-YYYY"
+                        class="{{ $errors->has('expiryDate') ? $inputError : $inputNormal }}"
+                        {{-- @if($expiryDate) value="{{ $expiryDate }}" @endif --}}
+                    />
+                    @error('expiryDate')
+                        <span class="{{ $errorMessage }}">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="mt-4">
                     <label class="{{ $checkboxLabel }}">
-                        <input type="checkbox" wire:model="expired" class="{{ $checkbox }}" />
-                        Expired
+                        <div class="flex items-center gap-2 align-top">
+                            <input type="checkbox" wire:model="active" class="{{ $checkbox }}" />
+                            <span class="dark:text-gray-800">Active</span>
+                        </div>
                     </label>
                 </div>
             @endif

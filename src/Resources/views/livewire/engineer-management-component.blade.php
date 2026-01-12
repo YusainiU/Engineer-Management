@@ -110,7 +110,7 @@
                                 class="{{ $tdActionLink }}"
                                 wire:click="toggleCertificateModal({{ $engineer->id }})"
                             >
-                                <x-engineermanagement-ui-icon name="skill" class="h-6 w-6" />
+                                <x-engineermanagement-ui-icon name="certificate" class="h-6 w-6" />
                                 View Certificates
                             </button>                            
                             <button 

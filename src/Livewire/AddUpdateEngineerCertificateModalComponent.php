@@ -5,6 +5,7 @@ namespace Simplydigital\EngineerManagement\Livewire;
 use Simplydigital\EngineerManagement\Models\EngineerCertifications;
 use Simplydigital\EngineerManagement\Models\EngineerManagement;
 use LivewireUI\Modal\ModalComponent;
+use Simplydigital\EngineerManagement\Models\Certificates;
 
 class AddUpdateEngineerCertificateModalComponent extends ModalComponent
 {
@@ -12,7 +13,9 @@ class AddUpdateEngineerCertificateModalComponent extends ModalComponent
     public $engineerId;
     public $engineer;
     public $engineerCertificateId = null;
+    public $certificateId;
     public $expiryDate = null;
+    public $issuedDate = null;
     public $expired = false;
     public $active = true;
 
@@ -28,9 +31,8 @@ class AddUpdateEngineerCertificateModalComponent extends ModalComponent
     {
         return [
             'certificateId' => 'required|integer',
-            'engineerId' => 'required|integer',
             'active' => 'boolean',
-            'expired' => 'boolean',
+            'issuedDate' => 'nullable|date',
             'expiryDate' => 'nullable|date',
         ];
     }
@@ -54,7 +56,10 @@ class AddUpdateEngineerCertificateModalComponent extends ModalComponent
         if($this->engineerCertificateId)
         {
             $this->engineerCertificate = $this->getEngineerCertificate();
-
+            $this->certificateId = $this->engineerCertificate->certificate_id;
+            $this->issuedDate = $this->engineerCertificate->issued_date?->format('Y-m-d');
+            $this->expiryDate = $this->engineerCertificate->expiry_date?->format('Y-m-d');
+            $this->active = $this->engineerCertificate->active;
         }
     }
 
@@ -70,7 +75,7 @@ class AddUpdateEngineerCertificateModalComponent extends ModalComponent
 
     public function getAllActiveCertificates()
     {
-        return EngineerCertifications::where('active', true)->get();
+        return Certificates::where('active', true)->get();
     }
 
     public function update()
@@ -79,12 +84,13 @@ class AddUpdateEngineerCertificateModalComponent extends ModalComponent
         $input = [
             'engineer_id' => $this->engineerId,
             'certificate_id' => $this->certificateId,
+            'issued_date' => $this->issuedDate,
             'expiry_date' => $this->expiryDate,
-            'expired' => $this->expired,
+            'active' => $this->active,
         ];
         $this->engineerCertificate->update($input);
         session()->flash('message', 'Engineer Certificate updated successfully.');
-        $this->resertForm();
+        $this->resetForm();
         $this->closedAndRefresh();
     }
 
@@ -92,15 +98,16 @@ class AddUpdateEngineerCertificateModalComponent extends ModalComponent
     {
         $this->validate();
         $input = [
+            'certification_number' => null,
             'engineer_id' => $this->engineerId,
             'certificate_id' => $this->certificateId,
             'expiry_date' => $this->expiryDate,
-            'expired' => $this->expired,
+            'issued_date' => $this->issuedDate,
             'active' => $this->active,
         ];
         EngineerCertifications::create($input);
         session()->flash('message', 'Engineer Certificate added successfully.');
-        $this->resertForm();
+        $this->resetForm();
         $this->closedAndRefresh();
     }   
 
@@ -109,12 +116,14 @@ class AddUpdateEngineerCertificateModalComponent extends ModalComponent
         $this->closeModal();
     }
 
-    public function resertForm()
+    public function resetForm()
     {
         $this->engineerCertificateId = null;
+        $this->certificateId = null;
         $this->expiryDate = null;
-        $this->expired = false;
+        $this->issuedDate = null;
         $this->active = true;
+        $this->modalSave = 'save';
     }
 
     public function createNewCertificate()
@@ -125,13 +134,16 @@ class AddUpdateEngineerCertificateModalComponent extends ModalComponent
 
     public function updateCertificate($certificateId)
     {
+        $this->resetForm();
         $this->engineerCertificateId = $certificateId;
-        $this->engineerCertificate = $this->getEngineerCertificate();
-        $this->displayList = false;    
+        $this->initialise();
+        $this->displayList = false;
+        $this->modalSave = 'update';    
     }
 
     public function backToList()
     {
+        $this->resetForm();
         $this->displayList = true;
     }
     

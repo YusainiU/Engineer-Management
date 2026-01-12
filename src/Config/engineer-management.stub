@@ -24,6 +24,7 @@ return [
     'SKILL_PREFIX' => 'SKL',
     'ENGSKL_PREFIX' => 'ENGSKL',
     'CERT_PREFIX' => 'CERT',
+    'ENGCERT_PREFIX => 'ENGCERT',
 
     /*
     |--------------------------------------------------------------------------

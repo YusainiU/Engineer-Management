@@ -23,9 +23,37 @@ class EngineerCertifications extends Model
     protected $casts = [
 		'expired' => 'boolean',
         'active' => 'boolean',
-		'issued_date' => 'datetime:d-m-Y H;i:s',
-		'expiry_date' => 'datetime:d-m-Y H;i:s',
+		'issued_date' => 'datetime:d-m-Y H:i:s',
+		'expiry_date' => 'datetime:d-m-Y H:i:s',
     ];
+
+	public function setCertificationNumberAttribute($value)
+	{
+		$this->attributes['certification_number'] = Config('engineer-management.ENGCERT_PREFIX') . time();
+	}
+
+	// public function getIssuedDateAttribute($value)
+	// {
+	// 	return $value ? \Carbon\Carbon::parse($value)->format('d-m-Y') : null;
+	// }
+
+	// public function getExpiryDateAttribute($value)
+	// {
+	// 	return $value ? \Carbon\Carbon::parse($value)->format('d-m-Y') : null;
+	// }
+
+	public function isExpired()
+	{
+		if($this->expiry_date && $this->expiry_date->isPast()){
+			return true;
+		}
+		return false;
+	}
+
+	public function getActiveAttribute($value)
+	{
+		return (bool) $value;
+	}
 
 	public function engineer()
 	{
@@ -41,6 +69,8 @@ class EngineerCertifications extends Model
 	{
 		static::deleting(function ($certificate) {
 			$certificate->active = false;
+			$certificate->expired = true;
+			$certificate->expiry_date = now();
 			$certificate->saveQuietly();
 		});
 
@@ -52,9 +82,13 @@ class EngineerCertifications extends Model
 		static::updated(function($certificate){
 			if($certificate->expired){
 				$certificate->expiry_date = now();
+				$certificate->active = false;
+				$certificate->saveQuietly();
 			}
-			if($certificate->expiry_date){
+			if($certificate->expiry_date && $certificate->isExpired()){
 				$certificate->expired = true;
+				$certificate->active = false;
+				$certificate->saveQuietly();
 			}			
 		});
 	}
@@ -64,8 +98,8 @@ class EngineerCertifications extends Model
 		return [
 			'expired' => 'boolean',
 			'active' => 'boolean',
-			'issued_date' => 'datetime:d-m-Y H;i:s',
-			'expiry_date' => 'datetime:d-m-Y H;i:s',			
+			'issued_date' => 'datetime:d-m-Y H:i:s',
+			'expiry_date' => 'datetime:d-m-Y H:i:s',			
 		];
 	}    
 }
