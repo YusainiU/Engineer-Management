@@ -5,9 +5,12 @@ namespace Simplydigital\EngineerManagement\Provider;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Livewire\Livewire;
+
 use Simplydigital\EngineerManagement\Http\Components\BladeEngineerManagementComponent;
 use Simplydigital\EngineerManagement\Http\Components\BladeSkillComponent;
 use Simplydigital\EngineerManagement\Http\Components\BladeCertificateComponent;
+use Simplydigital\EngineerManagement\Http\Components\BladeEngineersSummaryComponent;
+
 use Simplydigital\EngineerManagement\Livewire\AddUpdateEngineerModalComponent;
 use Simplydigital\EngineerManagement\Livewire\AddUpdateSkillModalComponent;
 use Simplydigital\EngineerManagement\Livewire\AddUpdateCertificateModalComponent;
@@ -16,6 +19,7 @@ use Simplydigital\EngineerManagement\Livewire\EngineerManagementComponent;
 use Simplydigital\EngineerManagement\Livewire\AddUpdateEngineerSkillsModalComponent;
 use Simplydigital\EngineerManagement\Livewire\AddUpdateEngineerCertificateModalComponent;
 use Simplydigital\EngineerManagement\Livewire\CertificateComponent;
+use Simplydigital\EngineerManagement\Livewire\EngineersSummaryComponent;
 
 class EngineerManagementServiceProvider extends ServiceProvider
 {
@@ -25,67 +29,77 @@ class EngineerManagementServiceProvider extends ServiceProvider
     */
     public function boot()
     {
-        //Load views
+        $this->loadViews();
+        $this->publishFiles();
+        $this->registerBladeComponents();      
+        $this->registerLivewireComponents();
+     
+    }
+
+    public function loadViews(): void
+    {
         $this->loadViewsFrom(__DIR__.'/../Resources/views', 'engineermanagement');
-
         $this->loadViewComponentsAs('engineermanagement-ui',[\Simplydigital\EngineerManagement\View\Components\Icon::class]);
+        if (file_exists(__DIR__ . '/../Routes/web.php')) {
+            $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
+        }    
+    }
 
+    public function publishFiles(): void
+    {
         //Publish migrations
+        $this->publishMigrations();
+        //Publis config
+        $this->publishConfig();
+        //Publish resources
+        $this->publishResources();
+
+    }
+
+    public function publishMigrations(): void
+    {
         $this->publishes([
             __DIR__ . '/../Database/migrations/create_engineer_management_table.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_engineer_management_table.php'),
             __DIR__ . '/../Database/migrations/create_skills_table.stub' => database_path('migrations/' . date('Y_m_d_His', time() + 1) . '_create_skills_table.php'),
             __DIR__ . '/../Database/migrations/create_engineer_skills_table.stub' => database_path('migrations/' . date('Y_m_d_His', time() + 2) . '_create_engineer_skills_table.php'),
             __DIR__ . '/../Database/migrations/create_certificate_table.stub' => database_path('migrations/' . date('Y_m_d_His', time() + 3) . '_create_certificate_table.php'),
             __DIR__ . '/../Database/migrations/create_engineer_certification_table.stub' => database_path('migrations/' . date('Y_m_d_His', time() + 4) . '_create_engineer_certification_table.php'),  
-        ], 'engineer-management-migrations');
-        
-        //Publis config
+        ], 'engineer-management-migrations');        
+    }
+
+    public function publishConfig(): void
+    {
         $this->publishes([
             __DIR__ . '/../Config/engineer-management.stub' => config_path('engineer-management.php'),
         ], 'engineer-management-config');
+    }
 
+    public function publishResources(): void
+    {
         $this->publishes([
             __DIR__.'/../Resources/icons' => resource_path('Simplydigital/EngineerManagement/icons')
         ], 'simplydigital-resources');
+    }
 
-        //Publish routes if exists
-        if (file_exists(__DIR__ . '/../Routes/web.php')) {
-            $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
-        }
-        
-        //Register Livewire components
-        Livewire::component('engineermanagement-component', EngineerManagementComponent::class);
-
-        //Register Livewire AddUopdateEngineerModalComponent
-        Livewire::component('addupdateengineermodal-component', AddUpdateEngineerModalComponent::class);
-
-        //Register Livewire AddUpdateSkillModalComponent
-        Livewire::component('addupdateskillmodal-component', AddUpdateSkillModalComponent::class);
-
-        //Register Livewire AddUpdateCertificateModalComponent
-        Livewire::component('addupdatecertificatemodal-component', AddUpdateCertificateModalComponent::class);
-
-        //Register Livewire SkillsComponent
-        Livewire::component('skills-component', SkillsComponent::class);
-
-        //Register Livewire CertificateComponent
-        Livewire::component('certificate-component', CertificateComponent::class);    
-
-        //Register Blade directive for Engineer Management Component
+    public function registerBladeComponents(): void
+    {
         Blade::component('blade-engineermanagement', BladeEngineerManagementComponent::class);
-        
-        //Register Blade directive for Skill Component
         Blade::component('blade-skill', BladeSkillComponent::class);
-
-        //Register Blade directive for Certificate Component
         Blade::component('blade-certificate', BladeCertificateComponent::class);
+        Blade::component('blade-engineerssummary',BladeEngineersSummaryComponent::class);
+    }
 
-        //Register livewire AddUpdateEngineerSkillsModalComponent
+    public function registerLivewireComponents(): void
+    {
+        Livewire::component('engineermanagement-component', EngineerManagementComponent::class);
+        Livewire::component('addupdateengineermodal-component', AddUpdateEngineerModalComponent::class);
+        Livewire::component('addupdateskillmodal-component', AddUpdateSkillModalComponent::class);
+        Livewire::component('addupdatecertificatemodal-component', AddUpdateCertificateModalComponent::class);
+        Livewire::component('skills-component', SkillsComponent::class);
+        Livewire::component('certificate-component', CertificateComponent::class);
         Livewire::component('addupdateengineerskillsmodal-component', AddUpdateEngineerSkillsModalComponent::class);
-
-        //Reister livewire AddUpdateEngineerCertificateModalComponent
         Livewire::component('addupdateengineercertificatesmodal-component', AddUpdateEngineerCertificateModalComponent::class);
-     
+        Livewire::component('engineerssummary-component', EngineersSummaryComponent::class);   
     }
 
     public function register(): void
