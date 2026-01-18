@@ -28,6 +28,12 @@ class EngineerSkills extends Model
 		$this->attributes['number'] = Config('engineer-management.ENGSKL_PREFIX') . time();
 	}
 
+	public function getSkillLevelValue()
+	{
+		$skillLevels = config('engineer-management.skill_levels');
+		return $skillLevels[$this->skill_level] ?? $this->skill_level;
+	}
+
 	public function engineer(): BelongsTo
 	{
 		return $this->belongsTo(EngineerManagement::class, 'engineer_id');
