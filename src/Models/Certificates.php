@@ -27,6 +27,12 @@ class Certificates extends Model
         $this->attributes['number'] = Config('engineer-management.CERT_PREFIX') . time();
     }
 
+	public function getTypeValue()
+	{
+		$types = config('engineer-management.certification_types');
+		return $types[$this->type] ?? $this->type;
+	}
+
 	protected static function booted()
 	{
 		static::deleting(function ($certificate) {

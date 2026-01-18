@@ -32,16 +32,6 @@ class EngineerCertifications extends Model
 		$this->attributes['certification_number'] = Config('engineer-management.ENGCERT_PREFIX') . time();
 	}
 
-	// public function getIssuedDateAttribute($value)
-	// {
-	// 	return $value ? \Carbon\Carbon::parse($value)->format('d-m-Y') : null;
-	// }
-
-	// public function getExpiryDateAttribute($value)
-	// {
-	// 	return $value ? \Carbon\Carbon::parse($value)->format('d-m-Y') : null;
-	// }
-
 	public function isExpired()
 	{
 		if($this->expiry_date && $this->expiry_date->isPast()){

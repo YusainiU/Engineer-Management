@@ -43,7 +43,7 @@ Class EngineerDetailComponent extends Component
             ->whereHas('certifications', function ($query) {
                 $query->where('active', true);
             })
-            ->get();
+            ->get()->first()->certifications;
     }   
 
     public function render()
