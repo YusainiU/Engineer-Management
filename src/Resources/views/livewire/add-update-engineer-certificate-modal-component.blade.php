@@ -110,8 +110,7 @@
                         wire:model="issuedDate" 
                         id="issuedDate" 
                         placeholder="DD-MM-YYYY"
-                        class="{{ $errors->has('issuedDate') ? $inputError : $inputNormal }}" 
-                        {{-- @if($issuedDate) value="{{ $issuedDate }}" @endif --}}
+                        class="{{ $errors->has('issuedDate') ? $inputError : $inputNormal }}"
                     />
                     @error('issuedDate')
                         <span class="{{ $errorMessage }}">{{ $message }}</span>
@@ -125,7 +124,6 @@
                         id="expiryDate" 
                         placeholder="DD-MM-YYYY"
                         class="{{ $errors->has('expiryDate') ? $inputError : $inputNormal }}"
-                        {{-- @if($expiryDate) value="{{ $expiryDate }}" @endif --}}
                     />
                     @error('expiryDate')
                         <span class="{{ $errorMessage }}">{{ $message }}</span>

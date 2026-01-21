@@ -11,6 +11,7 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
 {
 
     public $engineerId;
+    public $engineerSkillId;
     public $engineerSkills;
     public $currentSkill;
     public $engineer;
@@ -21,10 +22,11 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
     public $skill_levels = [];
     public $displayList = true;
 
-    public $skill_id = '';
-    public $skill_level = '';
-    public $description = '';
+    public $skill_id;
+    public $skill_level;
+    public $description ;
     public $active = true;
+    public $originExternalForUpdate = false;
 
     public static function maxWidth(): string
     {
@@ -35,6 +37,9 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
     public function mount()
     {
         $this->initialise();
+        if($this->originExternalForUpdate){
+            $this->updateSkill($this->engineerSkillId);
+        }
     }
 
     public function initialise()
@@ -44,10 +49,10 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
         $this->skills = $this->getAllActiveSkills();
         $this->skill_levels = config('engineer-management.skill_levels');
 
-        if($this->engineerSkills->isEmpty())
-        {
+        if($this->engineerSkills->isEmpty()){
             $this->displayList = false;
         }
+
     }
 
     public function rules()
@@ -80,8 +85,8 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
     public function getSkill($skillId)
     {
         $this->modalSave = 'update';
-        $this->skill_id = $skillId;
         $this->currentSkill = EngineerSkills::find($skillId);
+        $this->skill_id = $this->currentSkill->skill_id;
         $this->skill_level = $this->currentSkill->skill_level;
         $this->description = $this->currentSkill->description;
         $this->active = $this->currentSkill->active;
@@ -91,6 +96,7 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
     {
         $this->validate();
         $input = [
+            'skill_id' => $this->skill_id,
             'skill_level' => $this->skill_level,
             'description' => $this->description,
             'active' => $this->active,
@@ -99,7 +105,9 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
         session()->flash('message', 'The skill has been updated');
         $this->resetForm();
         $this->displayList = true;
-        $this->engineerSkills = $this->currentSkill->get();
+        $this->initialise();
+        //$this->engineerSkills = $this->currentSkill->get();
+
     }
 
     public function save()
@@ -133,6 +141,7 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
 
     public function closedAndRefresh()
     {
+        $this->dispatch('closedAddUpdateEngineerSkillModalComponent');
         $this->closeModal();
     }
 

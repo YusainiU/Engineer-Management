@@ -3,6 +3,7 @@
 namespace Simplydigital\EngineerManagement\Livewire;
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 use Simplydigital\EngineerManagement\Models\EngineerManagement;
 use Simplydigital\EngineerManagement\Models\Certificates;
 
@@ -23,10 +24,22 @@ class EngineersSummaryComponent extends Component
 
     public function mount()
     {
+        $this->initialise();
+    }
+
+    public function initialise()
+    {
         $this->engineers = $this->getAllActiveEngineers();
         $this->skills = config('engineer-management.skill_levels');
-        $this->certifications = $this->getAllCertifications();
+        $this->certifications = $this->getAllCertifications();      
+    }   
+
+    #[On('closeEngineerSummaryComponent')]
+    public function closeFilter()
+    {
+        $this->resetSelection();
     }
+
     public function getAllActiveEngineers()
     {
         return EngineerManagement::where('active', true)->get();
@@ -96,8 +109,8 @@ class EngineersSummaryComponent extends Component
         $this->skillId = null;
         $this->certificationId = null;
         $this->displayFilterOptions = true;
-    }   
-
+    }
+    
     public function render()
     {
         return view('engineermanagement::livewire.engineers-summary-component');

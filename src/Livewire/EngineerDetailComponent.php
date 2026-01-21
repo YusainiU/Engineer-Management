@@ -4,6 +4,7 @@ Namespace Simplydigital\EngineerManagement\Livewire;
 
 use Livewire\Component;
 use Simplydigital\EngineerManagement\Models\EngineerManagement;
+use Livewire\Attributes\On;
 
 Class EngineerDetailComponent extends Component
 {
@@ -11,15 +12,61 @@ Class EngineerDetailComponent extends Component
     public $engineer;
     public $engSkills;
     public $engCertifications;
+    public $selectedEngineerCertificateId;
+    public $selectedEngineerSkillId;
+    public $openCertificateModal = false;
+    public $openSkillModal = false;
 
-    public function mount($engineerId)
+    public function mount()
     {
-        $this->engineerId = $engineerId;
-        $this->engineer = $this->getEngineerDetail();
-        $this->engSkills = $this->getEngineerSkills();
-        $this->engCertifications = $this->getEngineerCertifications();   
+        $this->initialise();
     }
 
+    public function initialise()
+    {
+        $this->engineer = $this->getEngineerDetail();
+        $this->engSkills = $this->getEngineerSkills();
+        $this->engCertifications = $this->getEngineerCertifications();  
+    }
+
+    #[On('closedAddUpdateEngineerCertificateModalComponent')]
+    public function refreshEngineerCertifications()
+    {
+        $this->resetModalComponent();        
+    }
+    
+    #[On('closedAddUpdateEngineerSkillModalComponent')]
+    public function refreshEngineerSkills()
+    {
+        $this->resetModalComponent();
+    }
+
+    public function closeComponent()
+    {
+        $this->dispatch('closeEngineerSummaryComponent');
+    }
+
+    public function resetModalComponent()
+    {
+        $this->selectedEngineerSkillId = null;
+        $this->selectedEngineerCertificateId = null;
+        $this->openCertificateModal = false;
+        $this->openSkillModal = false;
+    }
+
+    public function openCertificate($certificateId)
+    {        
+        $this->resetModalComponent();
+        $this->selectedEngineerCertificateId = $certificateId;
+        $this->openCertificateModal = true;
+    }
+
+    public function openSkill($skillId)
+    {
+        $this->resetModalComponent();
+        $this->selectedEngineerSkillId = $skillId;
+        $this->openSkillModal = true;
+    }
 
     public function getEngineerDetail()
     {
@@ -28,22 +75,24 @@ Class EngineerDetailComponent extends Component
 
      public function getEngineerSkills()
     {
-        return EngineerManagement::where('id', $this->engineerId)
+        $skills = EngineerManagement::where('id', $this->engineerId)
             ->with('skills')
             ->whereHas('skills', function ($query) {
                 $query->where('active', true);
             })
-            ->get()->first()->skills;
+            ->get()->first();
+            return $skills ? $skills->skills : collect();
     }
 
     public function getEngineerCertifications()
     {
-        return EngineerManagement::where('id', $this->engineerId)
+        $cert =  EngineerManagement::where('id', $this->engineerId)
             ->with('certifications')
             ->whereHas('certifications', function ($query) {
                 $query->where('active', true);
             })
-            ->get()->first()->certifications;
+            ->get()->first();
+        return $cert ? $cert->certifications : collect();
     }   
 
     public function render()

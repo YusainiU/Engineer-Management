@@ -26,6 +26,7 @@ class AddUpdateEngineerCertificateModalComponent extends ModalComponent
     public $engineerCertificate;
     public $allCertificates;
     public $displayList = true;
+    public $originExternalForUpdate = false;
 
     public function rules()
     {
@@ -45,7 +46,12 @@ class AddUpdateEngineerCertificateModalComponent extends ModalComponent
 
     public function mount()
     {
-        $this->initialise();        
+        if($this->originExternalForUpdate)
+        {
+            $this->updateCertificate($this->engineerCertificateId);
+        }else{
+            $this->initialise();            
+        }        
     }
 
     public function initialise()
@@ -113,6 +119,7 @@ class AddUpdateEngineerCertificateModalComponent extends ModalComponent
 
     public function closedAndRefresh()
     {
+        $this->dispatch('closedAddUpdateEngineerCertificateModalComponent');
         $this->closeModal();
     }
 
