@@ -36,9 +36,10 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
 
     public function mount()
     {
-        $this->initialise();
         if($this->originExternalForUpdate){
             $this->updateSkill($this->engineerSkillId);
+        }else{
+            $this->initialise();
         }
     }
 
@@ -101,12 +102,17 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
             'description' => $this->description,
             'active' => $this->active,
         ];
+
         $this->currentSkill->update($input);
-        session()->flash('message', 'The skill has been updated');
         $this->resetForm();
-        $this->displayList = true;
-        $this->initialise();
-        //$this->engineerSkills = $this->currentSkill->get();
+        
+        if($this->originExternalForUpdate) {
+            $this->closedAndRefresh();
+        }else{
+            session()->flash('message', 'The skill has been updated');    
+            $this->displayList = true;
+            $this->initialise();
+        }
 
     }
 
@@ -153,8 +159,11 @@ class AddUpdateEngineerSkillsModalComponent extends ModalComponent
 
     public function updateSkill($engineerSkillId)
     {
+        $this->resetForm();
         $this->getSkill($engineerSkillId);
+        $this->initialise();
         $this->displayList = false;
+        $this->modalSave = 'update';
     }
         
     public function render()

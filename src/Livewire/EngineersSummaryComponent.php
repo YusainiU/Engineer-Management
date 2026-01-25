@@ -6,7 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\On;
 use Simplydigital\EngineerManagement\Models\EngineerManagement;
 use Simplydigital\EngineerManagement\Models\Certificates;
-
+use Simplydigital\EngineerManagement\Models\Skills;
 class EngineersSummaryComponent extends Component
 {
 
@@ -30,7 +30,7 @@ class EngineersSummaryComponent extends Component
     public function initialise()
     {
         $this->engineers = $this->getAllActiveEngineers();
-        $this->skills = config('engineer-management.skill_levels');
+        $this->skills = $this->getAllSkills();
         $this->certifications = $this->getAllCertifications();      
     }   
 
@@ -53,6 +53,11 @@ class EngineersSummaryComponent extends Component
     public function getSelectedEngineer()
     {
         return EngineerManagement::find($this->engineerId);
+    }
+
+    public function getAllSkills()
+    {
+        return Skills::get();
     }
 
     public function getEngineersBySkillId()

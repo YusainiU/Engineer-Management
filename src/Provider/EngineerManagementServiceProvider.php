@@ -21,6 +21,9 @@ use Simplydigital\EngineerManagement\Livewire\AddUpdateEngineerCertificateModalC
 use Simplydigital\EngineerManagement\Livewire\CertificateComponent;
 use Simplydigital\EngineerManagement\Livewire\EngineersSummaryComponent;
 use Simplydigital\EngineerManagement\Livewire\EngineerDetailComponent;
+use Simplydigital\EngineerManagement\Livewire\EngineerSkillComponent;
+
+use Simplydigital\EngineerManagement\Services\EngineerManagementServices;
 
 class EngineerManagementServiceProvider extends ServiceProvider
 {
@@ -102,11 +105,14 @@ class EngineerManagementServiceProvider extends ServiceProvider
         Livewire::component('addupdateengineercertificatesmodal-component', AddUpdateEngineerCertificateModalComponent::class);
         Livewire::component('engineerssummary-component', EngineersSummaryComponent::class);
         Livewire::component('engineerdetail-component', EngineerDetailComponent::class);
+        Livewire::component('engineerskill-component', EngineerSkillComponent::class);
     }
 
     public function register(): void
     {
-        
+        $this->app->singleton('engineermanagementservices', function () {
+            return new EngineerManagementServices();
+        });       
     }    
 
 }

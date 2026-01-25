@@ -39,10 +39,10 @@
             <!-- Skill -->
             <div class="flex-1">
                 <label class="{{ $inputLabel }}">Select Skill</label>
-                <select wire:model="skillId" class="{{ $inputNormal }}">
+                <select wire:model="skillId" wire:change="selectSkill($event.target.value)" class="{{ $inputNormal }}">
                     <option value="">-- Select Skill --</option>
-                    @foreach ($skills as $skillKey =>$skill)
-                        <option value="{{ $skillKey }}">{{ $skill }}</option>
+                    @foreach ($skills as $skill)
+                        <option value="{{ $skill->id }}">{{ $skill->skills }}</option>
                     @endforeach
                 </select>
             </div>
@@ -62,8 +62,8 @@
         @if($selectedEngineer)
             <livewire:engineerdetail-component :engineerId="$engineerId" />
         @endif
-        @if($selectedSkill)
-            {{-- @include('engineer-management::livewire.skill-detail-component', ['skillId' => $skillId]) --}}
+        @if($selectedSkill) 
+            <livewire:engineerskill-component :skillId="$skillId" />
         @endif
         @if($selectedCertification)
             {{-- @include('engineer-management::livewire.certification-detail-component', ['certificationId' => $certificationId]) --}}
