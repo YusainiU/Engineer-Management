@@ -12,9 +12,10 @@ class EngineerCertificateComponent extends Component
 
     public $certificateId;
     public $engineerCertificateId;
-    public $engineers;
+    public $engineerId;
+    public $engineerWithCertificates;
     public $certificate;
-    public $openCertificateModal = false;
+    public $displayEngineerCertificateDetails = false;
 
     public function mount()
     {
@@ -23,8 +24,21 @@ class EngineerCertificateComponent extends Component
 
     public function initialise()
     {
-        $this->engineers = $this->getEngineersWithCertificate();
+        $this->engineerWithCertificates = $this->getEngineersWithCertificate();
         $this->certificate = $this->getCertificate();
+    }
+
+    #[On('closedAddUpdateEngineerCertificateModalComponent')]
+    public function refreshEngineerCertifications()
+    {
+        $this->resetCertificateDetails();        
+    }
+    
+    public function resetCertificateDetails()
+    {
+        $this->engineerCertificateId = null;
+        $this->displayEngineerCertificateDetails = false;
+        $this->initialise();
     }
 
     public function getEngineersWithCertificate()
@@ -40,7 +54,14 @@ class EngineerCertificateComponent extends Component
     public function closeComponent()
     {
         $this->dispatch('closeEngineerSummaryComponent');
-    }    
+    }
+    
+    public function openEngineerCertificate($engineercertificateId, $engineerid)
+    {
+        $this->engineerCertificateId = $engineercertificateId;
+        $this->engineerId = $engineerid;
+        $this->displayEngineerCertificateDetails = true;
+    }
 
     public function render()
     {

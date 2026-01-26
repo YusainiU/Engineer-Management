@@ -40,6 +40,16 @@ class EngineerCertifications extends Model
 		return false;
 	}
 
+	public function formatIssuedDate()
+	{
+		return $this->issued_date ? $this->issued_date->format('d-m-Y') : null;
+	}
+
+	public function formatExpiryDate()
+	{
+		return $this->expiry_date ? $this->expiry_date->format('d-m-Y') : null;
+	}
+
 	public function getActiveAttribute($value)
 	{
 		return (bool) $value;

@@ -19,6 +19,7 @@ use Simplydigital\EngineerManagement\Livewire\EngineerManagementComponent;
 use Simplydigital\EngineerManagement\Livewire\AddUpdateEngineerSkillsModalComponent;
 use Simplydigital\EngineerManagement\Livewire\AddUpdateEngineerCertificateModalComponent;
 use Simplydigital\EngineerManagement\Livewire\CertificateComponent;
+use Simplydigital\EngineerManagement\Livewire\EngineerCertificateComponent;
 use Simplydigital\EngineerManagement\Livewire\EngineersSummaryComponent;
 use Simplydigital\EngineerManagement\Livewire\EngineerDetailComponent;
 use Simplydigital\EngineerManagement\Livewire\EngineerSkillComponent;
@@ -106,6 +107,7 @@ class EngineerManagementServiceProvider extends ServiceProvider
         Livewire::component('engineerssummary-component', EngineersSummaryComponent::class);
         Livewire::component('engineerdetail-component', EngineerDetailComponent::class);
         Livewire::component('engineerskill-component', EngineerSkillComponent::class);
+        Livewire::component('engineercertificate-component', EngineerCertificateComponent::class);
     }
 
     public function register(): void

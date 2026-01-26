@@ -73,7 +73,7 @@ Class EngineerDetailComponent extends Component
         return EngineerManagement::find($this->engineerId);
     }   
 
-     public function getEngineerSkills()
+    public function getEngineerSkills()
     {
         $skills = EngineerManagement::where('id', $this->engineerId)
             ->with('skills')

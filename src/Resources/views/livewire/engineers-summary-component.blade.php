@@ -50,7 +50,7 @@
             <!-- CertificationS -->
             <div class="flex-1">
                 <label class="{{ $inputLabel }}">Select Certification</label>
-                <select wire:model="certificationId" class="{{ $inputNormal }}">
+                <select wire:model="certificationId" wire:change="selectCertification($event.target.value)" class="{{ $inputNormal }}">
                     <option value="latest">-- Select Certificate --</option>
                     @foreach ($certifications as $certification)
                         <option value="{{$certification->id }}">{{ $certification->name }}</option>
@@ -66,7 +66,7 @@
             <livewire:engineerskill-component :skillId="$skillId" />
         @endif
         @if($selectedCertification)
-            {{-- @include('engineer-management::livewire.certification-detail-component', ['certificationId' => $certificationId]) --}}
+            <livewire:engineercertificate-component :certificateId="$certificationId" :engineerId="$engineerId" />
         @endif   
     @endif
 

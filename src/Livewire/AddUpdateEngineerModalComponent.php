@@ -3,8 +3,10 @@
 namespace Simplydigital\EngineerManagement\Livewire;
 
 use Simplydigital\EngineerManagement\Models\EngineerManagement;
+use Simplydigital\EngineerManagement\Services\EngineerManagementServices;
 use LivewireUI\Modal\ModalComponent;
 use Illuminate\Support\Facades\DB;
+use Random\Engine;
 
 class AddUpdateEngineerModalComponent extends ModalComponent
 {
@@ -54,7 +56,7 @@ class AddUpdateEngineerModalComponent extends ModalComponent
         }
     }
 
-    public function mount()
+    public function mount(EngineerManagementServices $engineerManagementServices)
     {
         $this->modalMode = $this->mode;
         if ($this->engineerManagerId && $this->modalMode === 'toggleEditModal') {
@@ -63,8 +65,8 @@ class AddUpdateEngineerModalComponent extends ModalComponent
         } else {
             $this->showAddModal = true;
         }
-        $this->users = $this->getUsers();
-        $this->managers = $this->getManagers();
+        $this->users = $this->getUsers($engineerManagementServices);
+        $this->managers = $this->getManagers($engineerManagementServices);
         if ($this->managers->isEmpty()) {
             $this->managers = $this->users;
         }
@@ -82,31 +84,15 @@ class AddUpdateEngineerModalComponent extends ModalComponent
         $this->active = $engineerManager->active;
     }
 
-    public function getUsers()
+    public function getUsers($engineerManagementServices)
     {
-        $users = DB::table('users')
-            ->whereNotExists(function ($query) {
-                $query->select(DB::raw(1))
-                    ->from('engineer_management')
-                    ->whereColumn('engineer_management.user_id', 'users.id');
-            })
-            ->pluck('name', 'id');
-
+        $users = $engineerManagementServices->getNonEngineeringUsers();
         return $users;
     }
 
-    public function getManagers()
+    public function getManagers($engineerManagementServices)
     {
-        $managers = DB::table('users')
-            ->whereExists(function ($query) {
-                $query->select(DB::raw(1))
-                    ->from('engineer_management')
-                    ->whereColumn('engineer_management.user_id', 'users.id')
-                    ->where('engineer_management.position', 'manager')
-                    ->where('engineer_management.active', true);
-            })
-            ->pluck('name', 'id');
-
+        $managers = $engineerManagementServices->getEngineerManagers();
         return $managers;
     }
 
