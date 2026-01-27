@@ -36,12 +36,14 @@ return [
     */
 
     'departments' => [
+        'general' => 'General', 
         'communications' => 'Communications',
         'network' => 'Network',
         'information' => 'Information',     
     ],
 
     'positions' => [
+        'engineer' => 'Engineer',
         'junior_engineer' => 'Junior Engineer',
         'senior_engineer' => 'Senior Engineer',
         'lead_engineer' => 'Lead Engineer',

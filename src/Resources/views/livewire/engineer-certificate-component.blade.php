@@ -44,7 +44,7 @@
                             <x-engineermanagement-ui-icon name="certificate" class="h-6 w-6 text-gray-900" />
                         </button>
                     </div>
-                    <div class="flex gap-2 flex-col">
+                    <div class="flex gap-2 flex-col ml-4">
                         <div class="{{ $liRightTop }} flex gap-2 flex-col">
                             <strong class="text-gray-900">{{ $eng->engineer->user->name }}</strong>
                             <span class="text-gray-900">Issued Date: {{ $eng->formatIssuedDate() }}</span>
@@ -53,6 +53,9 @@
                                 @if($eng->isExpired())
                                     <span class="text-red-900 font-bold">(Expired)</span>
                                 @endif   
+                            </span>
+                            <span class="text-gray-900">
+                                Issued By: {{ $eng->certificate->issued_by }}
                             </span>
                         </div>
                         <div class="{{ $liRightBottom }}">

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\DB;
 use Simplydigital\EngineerManagement\Models\EngineerManagement;
 use Simplydigital\EngineerManagement\Models\Skills;
 use Simplydigital\EngineerManagement\Models\Certificates;
+use App\Models\User;
+use Simplydigital\EngineerManagement\Models\EngineerCertifications;
 
 class EngineerManagementServices
 {
@@ -43,6 +45,17 @@ class EngineerManagementServices
                       ->where('id', $certificationId);
             })
             ->get();
+    }
+    
+    public function getTotalExpiredCertificationsCount()
+    {
+        $expired = $this->getExpiredEngineerCertifications();
+        return $expired->count();
+    }
+    public function getExpiredEngineerCertifications()
+    {
+        $currentDate = now();
+        return EngineerCertifications::where('expiry_date', '<', $currentDate)->get();
     }
 
     public function getEngineerActiveSkills($engineerId)
@@ -91,13 +104,29 @@ class EngineerManagementServices
             ->pluck('name', 'id');
     }
     
-    public function makeUserEngineer($userId, $position)
+    public function makeUserAnEngineer(
+        User $user,
+        User $manager,
+        string $position = '',
+        string $department = '',
+        bool $active = true,
+    )
     {
         return EngineerManagement::create([
-            'user_id' => $userId,
-            'position' => $position,
-            'active' => true,
-        ]);
+            'user_id' => $user->id,
+            'manager_id' => $manager ? $manager->id : null,
+            'position' => $position ?? 'engineer',
+            'department' => $department ?? 'general',
+            'active' => $active,
+        ]);    
+    }
+
+    public function removeEngineerByUserId(User $user)
+    {
+        if(EngineerManagement::firstWhere('user_id', $user->id) !== null){
+            return EngineerManagement::where('user_id', $user->id)->delete();
+        }
+        return false;
     }
 
 }
